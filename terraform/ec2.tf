@@ -19,15 +19,15 @@ module "ec2" {
 
 ## SECURITY GROUP ##
 resource "aws_security_group" "allow_ips" {
-  name        = "allow_from_origin"
+  name        = "allow_http"
   description = "Allow inbound traffic origin"
   vpc_id      = module.vpc.vpc_id
 
   ingress {
-    from_port   = 0
-    to_port     = 65535
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["${lookup(data.external.current_ip.result, "current_ip_addr", null)}/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {

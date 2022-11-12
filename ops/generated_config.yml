@@ -47,9 +47,16 @@ jobs:
           command: |
             cd build_docker && chmod +x build.sh
             ./build.sh
+
+############ Deployment assume weather-appdev.ddns.net | weather-appqa.ddns.net | weather-appprod.ddns.net ############
       - run:
           name: Deploy latest weather app with docker-compose.yml
-          command: ssh://ubuntu@3.239.210.126 docker-compose pull && docker-compose up -d
+          command: |
+            cd docker-compose
+            docker context create $CIRCLE_BRANCH --docker "host=ssh://ubuntu@weather-app$CIRCLE_BRANCH.ddns.net"
+            docker context use $CIRCLE_BRANCH
+            docker-compose pull
+            docker-compose up -d          
 
 workflows:
   version: 2
