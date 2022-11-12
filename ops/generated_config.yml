@@ -56,7 +56,7 @@ jobs:
             docker context create $CIRCLE_BRANCH --docker "host=ssh://ubuntu@weather-app$CIRCLE_BRANCH.ddns.net"
             docker context use $CIRCLE_BRANCH
             docker-compose pull
-            docker-compose up -d          
+            docker-compose up -d    
 
 workflows:
   version: 2
