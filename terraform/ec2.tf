@@ -9,7 +9,7 @@ locals {
 module "ec2" {
   source          = "git::https://github.com/andrewduke51/aws_modules.git//ec2?ref=v1.4"
   ec2             = 1
-  instance_type   = "t2.micro"
+  instance_type   = var.instance_type
   security_groups = [aws_security_group.allow_ips.id]
   subnet_id       = module.vpc.subnet_internal
   user_data       = local.ctrl_user_data

@@ -1,4 +1,5 @@
 env             = "prod"
+instance_type   = "t-something.bigger"
 subnet_internal = "prod stuff"
 subnet_dmz      = "prod stuff"
 subnet_vpc      = "prod stuff"

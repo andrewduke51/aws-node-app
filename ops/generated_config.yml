@@ -47,9 +47,9 @@ jobs:
           command: |
             cd build_docker && chmod +x build.sh
             ./build.sh
-#      - run:
-#          name: Deploy weather app with docker-compose.yml
-#          command: ssh://ubuntu@remotehost docker-compose up -d
+      - run:
+          name: Deploy latest weather app with docker-compose.yml
+          command: ssh://ubuntu@3.239.210.126 docker-compose pull && docker-compose up -d
 
 workflows:
   version: 2
