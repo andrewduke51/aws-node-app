@@ -45,12 +45,11 @@ jobs:
       - run:
           name: build weather app container and push to repository
           command: |
-            cd build_docker && 
-            chmod +x build.sh
+            cd build_docker && chmod +x build.sh
             ./build.sh
-      - run:
-          name: Deploy weather app with docker-compose.yml
-          command: ssh://ubuntu@remotehost docker-compose up -d
+#      - run:
+#          name: Deploy weather app with docker-compose.yml
+#          command: ssh://ubuntu@remotehost docker-compose up -d
 
 workflows:
   version: 2
