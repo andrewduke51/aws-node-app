@@ -45,6 +45,7 @@ jobs:
       - run:
           name: build weather app container and test code
           command: |
+            cd build_docker
             echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
             docker build -t andrewduke51/nodeapp .
             docker run andrewduke51/nodeapp npm run test
