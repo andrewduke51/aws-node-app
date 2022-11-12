@@ -20,7 +20,6 @@ python_versions/
 vars.yml
 *bootstrap.sh*
 notes
-app/
 local_files/
 *.terraform*
 crash.log
