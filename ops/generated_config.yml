@@ -1,0 +1,65 @@
+version: 2.1
+jobs:
+  deploy-app:
+    machine: true
+    environment:
+      - ANSIBLE_HOST_KEY_CHECKING: False
+      - ANSIBLE_FORCE_COLOR: true
+      - PACKER_BUILD: false
+    resource_class: dukesofhazards/runner
+    working_directory: ~
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "dc:3f:4f:29:01:f7:c4:ff:d3:79:f2:00:85:7b:4c:3a"
+      - checkout
+      - run:
+          name: install pipeline dependencies
+          command: |
+            echo "export PATH=$PATH:$PWD/ops" >> ${BASH_ENV}
+            chmod +x ops/*.sh
+            ops/install_dependencies.sh
+      - run:
+          name: Create immutable EC2 image for node app with Hashicorp packer
+          command: |
+            if [ $PACKER_BUILD == "true" ]; then
+              cd build-ec2
+              ../ops/packer init .
+              ../ops/packer build aws-ubuntu.pkr.hcl
+            fi
+      - run:
+          name: Terraform Provision AWS Infrastructure
+          command: |
+            AUTO_DEPLOY="-auto-approve"
+            cd terraform && terraform init
+            if [ $CIRCLE_BRANCH = 'dev' ]; then
+              terraform plan -out tfapply -var-file dev.tfvars
+              terraform apply -var-file=dev.tfvars $AUTO_DEPLOY
+            elif [ $CIRCLE_BRANCH = 'qa' ]; then
+              terraform plan -out tfapply -var-file qa.tfvars
+              terraform apply -var-file=qa.tfvars $AUTO_DEPLOY
+            elif [ $CIRCLE_BRANCH = 'prod' ]; then
+              terraform plan -out tfapply -var-file prod.tfvars
+              terraform apply -var-file=prod.tfvars $AUTO_DEPLOY
+            fi
+      - run:
+          name: build weather app container and push to repository
+          command: |
+            cd build_docker && 
+            chmod +x build.sh
+            ./build.sh
+      - run:
+          name: Deploy weather app with docker-compose.yml
+          command: ssh://ubuntu@remotehost docker-compose up -d
+
+workflows:
+  version: 2
+  deploy-app:
+    jobs:
+      - deploy-app:
+          filters:
+            branches:
+              only:
+                - dev
+                - qa
+                - prod

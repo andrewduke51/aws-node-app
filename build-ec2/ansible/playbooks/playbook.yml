@@ -1,0 +1,21 @@
+---
+# playbook.yml
+- name: 'Provision Image'
+  hosts: default
+  become: true
+  tasks:
+    - name: Upgrade all apt packages
+      apt:
+       upgrade: dist
+       force_apt_get: yes
+
+    - name: Add the user ubuntu
+      ansible.builtin.user:
+        name: ubuntu
+        group: admin
+
+  roles:
+    - update-linux
+    - pub-key
+    - docker-install
+    - docker-compose

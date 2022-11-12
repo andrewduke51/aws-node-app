@@ -1,0 +1,26 @@
+version: 2.1
+setup: true
+orbs:
+  continuation: circleci/continuation@0.1.2
+jobs:
+  setup:
+    executor: continuation/default
+    steps:
+      - checkout # checkout code
+      - run: # run a command
+          name: Generate config
+          command: |
+            chmod +x ops/*.sh
+            ops/generate-config.sh ${CIRCLE_BRANCH}
+      - continuation/continue:
+          configuration_path: generated_config.yml # use newly generated config to continue
+workflows:
+  setup:
+    jobs:
+      - setup:
+          filters:
+            branches:
+              only:
+                - dev
+                - qa
+                - prod

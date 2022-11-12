@@ -1,0 +1,20 @@
+- name: Creates directory
+  file:
+    path: /docker-compose
+    state: directory
+    owner: docker
+    group: docker
+    mode: 0775
+
+- name: copy docker-compose.yml
+  copy:
+    src: "docker-compose.yml"
+    dest: "/docker-compose/docker-compose.yml"
+
+- name: Download docker-compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: 0777
+    group: docker
+    owner: docker
