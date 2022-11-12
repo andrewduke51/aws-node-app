@@ -2,7 +2,7 @@ FROM node:16
 
 # Create app directory
 WORKDIR /usr/src/app
-COPY weather-station .
+COPY app .
 
 RUN npm install
 

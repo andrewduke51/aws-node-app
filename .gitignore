@@ -20,7 +20,7 @@ python_versions/
 vars.yml
 *bootstrap.sh*
 notes
-weather-station/
+app/
 local_files/
 *.terraform*
 crash.log
