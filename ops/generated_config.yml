@@ -5,7 +5,7 @@ jobs:
     environment:
       - ANSIBLE_HOST_KEY_CHECKING: False
       - ANSIBLE_FORCE_COLOR: true
-      - PACKER_BUILD: false
+      - PACKER_BUILD: true
     resource_class: dukesofhazards/runner
     working_directory: ~
     steps:
@@ -14,18 +14,12 @@ jobs:
             - "dc:3f:4f:29:01:f7:c4:ff:d3:79:f2:00:85:7b:4c:3a"
       - checkout
       - run:
-          name: install pipeline dependencies
-          command: |
-            echo "export PATH=$PATH:$PWD/ops" >> ${BASH_ENV}
-            chmod +x ops/*.sh
-            ops/install_dependencies.sh
-      - run:
           name: Create immutable EC2 image for node app with Hashicorp packer
           command: |
             if [ $PACKER_BUILD == "true" ]; then
               cd build-ec2
-              ../ops/packer init .
-              ../ops/packer build aws-ubuntu.pkr.hcl
+              packer init .
+              packer build aws-ubuntu.pkr.hcl
             fi
       - run:
           name: Terraform Provision AWS Infrastructure
