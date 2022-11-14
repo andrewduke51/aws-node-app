@@ -5,7 +5,7 @@ jobs:
     environment:
       - ANSIBLE_HOST_KEY_CHECKING: False
       - ANSIBLE_FORCE_COLOR: true
-      - PACKER_BUILD: true
+      - PACKER_BUILD: false
     resource_class: dukesofhazards/runner
     working_directory: ~
     steps:
