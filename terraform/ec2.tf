@@ -8,7 +8,7 @@ locals {
 ## ec2 instance ##
 module "ec2" {
   source          = "git::https://github.com/andrewduke51/aws_modules.git//ec2?ref=v1.5"
-  ec2             = 1
+  ec2             = 0
   instance_type   = var.instance_type
   security_groups = [aws_security_group.allow_ips.id]
   subnet_id       = module.vpc.subnet_internal
