@@ -49,7 +49,7 @@ jobs:
 #            docker tag andrewduke51/nodeapp andrewduke51/nodeapp:latest
 #            docker push andrewduke51/nodeapp:latest
 
-############# Deployment assume weather-appdev.ddns.net | weather-appqa.ddns.net | weather-appprod.ddns.net ############
+############## Deployment assume weather-appdev.ddns.net | weather-appqa.ddns.net | weather-appprod.ddns.net ############
 #      - run:
 #          name: Deploy latest weather app with docker-compose.yml
 #          command: |
